@@ -1,4 +1,4 @@
-import * as React from "react";
+import Logo from "@/assets/icons/Logo";
 import {
   Sidebar,
   SidebarContent,
@@ -11,43 +11,21 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import Logo from "@/assets/icons/Logo";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { getSidebarItems } from "@/utils/getSidebarItems";
+import * as React from "react";
 import { Link } from "react-router";
 
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      items: [
-        {
-          title: "Analytics",
-          url: "/admin/analytics",
-        },
-      ],
-    },
-    {
-      title: "Tour Management",
-      url: "#",
-      items: [
-        {
-          title: "Add Tour",
-          url: "/admin/add-tour",
-        },
-        {
-          title: "Add Tour Type",
-          url: "/admin/add-tour-type ",
-        },
-      ],
-    },
-  ],
-};
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: userData } = useUserInfoQuery(undefined);
+
+  const data = {
+    navMain: getSidebarItems(userData?.data?.role),
+  };
+
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="items-start mb-2 mt-1 ml-2">
         <Logo />
       </SidebarHeader>
       <SidebarContent>
