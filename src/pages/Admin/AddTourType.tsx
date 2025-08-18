@@ -1,3 +1,4 @@
+import { DeleteConfirmation } from "@/components/DeleteConfirmation";
 import { AddTourTypeModal } from "@/components/modules/Admin/TourType/AddTourTypeModal";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,12 +10,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
+import {
+  useDeleteTourTypeMutation,
+  useGetTourTypesQuery,
+} from "@/redux/features/tour/tour.api";
 import { Trash2 } from "lucide-react";
 
 const AddTourType = () => {
   const { data } = useGetTourTypesQuery(undefined);
-  console.log(data);
+  const [deleteTourType, { isLoading }] = useDeleteTourTypeMutation();
+
+  const handleConfirmDelte = async (tourId: string) => {
+    const res = await deleteTourType(tourId).unwrap();
+    return res;
+  };
   return (
     <div className="w-full max-w7xl mx-auto px-4 border border-muted rounded-md">
       <div className="flex justify-between my-8">
@@ -33,12 +42,17 @@ const AddTourType = () => {
         </TableHeader>
         <TableBody>
           {data?.data?.map((type) => (
-            <TableRow key={type.id}>
-              <TableCell className="font-medium w-full">{type.name}</TableCell>
+            <TableRow key={type._id}>
+              <TableCell className="font-medium w-full">{type?.name}</TableCell>
               <TableCell className="">
-                <Button size="sm" className="cursor-pointer">
-                  <Trash2 />
-                </Button>
+                <DeleteConfirmation
+                  onClick={() => handleConfirmDelte(type._id)}
+                  isLoading={isLoading}
+                >
+                  <Button size="sm" className="cursor-pointer">
+                    <Trash2 />
+                  </Button>
+                </DeleteConfirmation>
               </TableCell>
             </TableRow>
           ))}
