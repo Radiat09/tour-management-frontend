@@ -13,7 +13,7 @@ import {
 import {
   useDeleteTourTypeMutation,
   useGetTourTypesQuery,
-} from "@/redux/features/tour/tour.api";
+} from "@/redux/features/tourtype/tourType.api";
 import { Trash2 } from "lucide-react";
 
 const AddTourType = () => {

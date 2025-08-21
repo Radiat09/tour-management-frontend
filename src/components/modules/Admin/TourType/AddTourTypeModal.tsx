@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAddTourTypeMutation } from "@/redux/features/tour/tour.api";
+import { useAddTourTypeMutation } from "@/redux/features/tourtype/tourType.api";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -25,7 +25,8 @@ export function AddTourTypeModal() {
   const form = useForm();
   const [addTourType] = useAddTourTypeMutation();
 
-  const onSubmit = async (data) => {
+  // TODO: ADD proper data type for onsubmit finction
+  const onSubmit = async (data: any) => {
     const res = await addTourType({ name: data.name }).unwrap();
     if (res.success) {
       toast.success("Tour Type Added");
